@@ -1,0 +1,1 @@
+about and landing page are almost complete jsut add data in them and also make them responsive for mobile .

@@ -1,0 +1,445 @@
+/* ================================
+   MAIN APP LAYOUT
+   ================================ */
+.app-container {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  background: #000;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ================================
+   BACKGROUND
+   ================================ */
+.background-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 1; /* Changed from -1 to 1 to ensure it's above the container background */
+  overflow: hidden;
+}
+
+/* Ensure content has higher z-index than background */
+.main-nav,
+.main-content,
+.footer {
+  position: relative;
+  z-index: 20; /* Increased from 10 to ensure content is above background */
+}
+
+/* ================================
+   NAVIGATION
+   ================================ */
+.main-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem 1.5rem;
+}
+
+.nav-brand {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.logo-badge {
+  width: 2rem;
+  height: 2rem;
+  background: white;
+  border-radius: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo-badge span {
+  color: black;
+  font-weight: bold;
+  font-size: 0.875rem;
+}
+
+.brand-text {
+  color: white;
+  font-weight: 500;
+  font-size: 1.125rem;
+}
+
+.nav-links {
+  display: none;
+  align-items: center;
+  gap: 2rem;
+}
+
+.nav-link {
+  color: #9ca3af;
+  transition: color 0.3s ease;
+  cursor: pointer;
+  position: relative;
+  text-decoration: none;
+}
+
+.nav-link:hover {
+  color: white;
+}
+
+.nav-underline {
+  position: absolute;
+  bottom: -0.25rem;
+  left: 0;
+  width: 0;
+  height: 0.125rem;
+  background: white;
+  transition: width 0.3s ease;
+}
+
+.nav-link:hover .nav-underline {
+  width: 100%;
+}
+
+.hire-btn {
+  margin-left: 1rem;
+  background: white;
+  color: black;
+  padding: 0.5rem 1rem;
+  border-radius: 9999px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: background 0.3s ease;
+}
+
+.hire-btn:hover {
+  background: #e5e7eb;
+}
+
+.mobile-menu {
+  display: flex;
+}
+
+.mobile-menu-btn {
+  color: white;
+  padding: 0.5rem;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 0.375rem;
+  border: none;
+  cursor: pointer;
+}
+
+.menu-icon {
+  width: 1.5rem;
+  height: 1.5rem;
+  stroke: currentColor;
+  fill: none;
+}
+
+/* ================================
+   MAIN CONTENT
+   ================================ */
+.main-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  min-height: 80vh;
+  padding: 0 1.5rem;
+}
+
+.hero-container {
+  max-width: 56rem;
+}
+
+.hero-section {
+  margin-bottom: 3rem;
+}
+
+.hero-title {
+  font-size: 3rem;
+  font-weight: 300;
+  color: white;
+  margin-bottom: 1.5rem;
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+  background: linear-gradient(135deg, #ffffff 0%, #cccccc 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Added for better readability */
+}
+
+.hero-title-bold {
+  font-weight: 500;
+}
+
+.hero-subtitle {
+  font-size: 1.25rem;
+  color: #e5e7eb; /* Lightened for better contrast */
+  margin-bottom: 3rem;
+  max-width: 42rem;
+  margin-left: auto;
+  margin-right: auto;
+  font-weight: 300;
+  line-height: 1.625;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3); /* Added for better readability */
+}
+
+/* ================================
+   CTA BUTTONS
+   ================================ */
+.cta-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 4rem;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #ffffff 0%, #f0f0f0 100%);
+  color: #000;
+  padding: 0.75rem 2rem;
+  border-radius: 9999px;
+  font-weight: 500;
+  box-shadow: 0 4px 15px rgba(255, 255, 255, 0.1);
+  transition: all 0.3s ease;
+  border: none;
+  cursor: pointer;
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(255, 255, 255, 0.2);
+  background: linear-gradient(135deg, #f0f0f0 0%, #e0e0e0 100%);
+}
+
+.btn-secondary {
+  background: rgba(255, 255, 255, 0.1); /* Increased opacity */
+  border: 1px solid rgba(255, 255, 255, 0.3); /* Increased opacity */
+  color: #fff;
+  backdrop-filter: blur(10px);
+  padding: 0.75rem 2rem;
+  border-radius: 9999px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.5);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(255, 255, 255, 0.1);
+}
+
+/* ================================
+   SKILLS GRID
+   ================================ */
+.skills-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.5rem;
+  text-align: center;
+}
+
+.skill-item {
+  padding: 1.5rem;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.05); /* Increased opacity */
+  border: 1px solid rgba(255, 255, 255, 0.1); /* Increased opacity */
+  backdrop-filter: blur(10px);
+  transition: all 0.4s ease;
+  cursor: pointer;
+}
+
+.skill-item:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.15);
+  transform: translateY(-4px);
+  box-shadow: 0 8px 30px rgba(255, 255, 255, 0.1);
+}
+
+.skill-label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #aaa; /* Lightened for better contrast */
+  margin-bottom: 0.5rem;
+  transition: color 0.3s ease;
+}
+
+.skill-item:hover .skill-label {
+  color: #ddd;
+}
+
+.skill-tech {
+  font-size: 1rem;
+  font-weight: 300;
+  color: #fff;
+}
+
+/* ================================
+   FOOTER
+   ================================ */
+.footer {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 20; /* Increased to ensure it's above background */
+  padding: 1.5rem 1.5rem;
+}
+
+.footer-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  color: #9ca3af; /* Lightened for better contrast */
+  font-size: 0.875rem;
+}
+
+.availability {
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.status-indicator {
+  position: relative;
+}
+
+.status-dot {
+  width: 0.45rem;
+  height: 0.45rem;
+  background-color: #19fd04;
+  border-radius: 9999px;
+}
+
+.status-pulse {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  width: 0.55rem;
+  height: 0.55rem;
+  background-color: #12ff01;
+  border-radius: 9999px;
+  opacity: 0.75;
+  animation: ping 1s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+.social-links {
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+}
+
+.social-link {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: color 0.3s ease;
+  text-decoration: none;
+  color: inherit;
+}
+
+.social-link:hover {
+  color: white;
+}
+
+.social-icon {
+  width: 1rem;
+  height: 1rem;
+  fill: currentColor;
+}
+
+/* ================================
+   ANIMATIONS
+   ================================ */
+@keyframes ping {
+  75%, 100% {
+    transform: scale(2);
+    opacity: 0;
+  }
+}
+
+/* ================================
+   RESPONSIVE DESIGN
+   ================================ */
+@media (min-width: 640px) {
+  .cta-buttons {
+    flex-direction: row;
+  }
+}
+
+@media (min-width: 768px) {
+  .main-nav {
+    padding: 2rem 2rem;
+  }
+  
+  .nav-links {
+    display: flex;
+  }
+  
+  .mobile-menu {
+    display: none;
+  }
+  
+  .hero-title {
+    font-size: 4.5rem;
+  }
+  
+  .hero-subtitle {
+    font-size: 1.5rem;
+  }
+  
+  .skills-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 2rem;
+  }
+  
+  .footer-content {
+    flex-direction: row;
+  }
+  
+  .availability {
+    margin-bottom: 0;
+  }
+}
+
+@media (max-width: 768px) {
+  .hero-title {
+    font-size: 3rem;
+  }
+  
+  .skill-item {
+    padding: 1rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .hero-title {
+    font-size: 2.5rem;
+  }
+  
+  .cta-buttons button {
+    width: 100%;
+  }
+  
+  .skills-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  .social-links {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+}
