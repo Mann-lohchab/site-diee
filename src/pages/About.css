@@ -30,17 +30,21 @@
   justify-content: space-between;
   align-items: center;
   padding: 1.5rem 1.5rem;
-  backdrop-filter: blur(10px);
-  background: rgba(0, 0, 0, 0.8);
+  background: transparent; /* Fully transparent */
+  backdrop-filter: none; /* Removed blur for cleaner transparency */
+}
+
+.nav-brand {
+  display: none; /* Hide the Portfolio logo and text */
 }
 
 .back-btn {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  color: #9ca3af;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #e5e7eb; /* Lightened for better contrast */
+  background: rgba(255, 255, 255, 0.15); /* Increased opacity for visibility */
+  border: 1px solid rgba(255, 255, 255, 0.3); /* Brighter border */
   padding: 0.5rem 1rem;
   border-radius: 0.5rem;
   transition: all 0.3s ease;
@@ -50,8 +54,8 @@
 
 .back-btn:hover {
   color: white;
-  background: rgba(255, 255, 255, 0.1);
-  border-color: rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.25); /* Slightly more opaque on hover */
+  border-color: rgba(255, 255, 255, 0.5); /* Brighter border on hover */
 }
 
 .back-icon {

@@ -1,0 +1,211 @@
+/* ================================
+   BLOG PAGE LAYOUT
+   ================================ */
+.blog-container {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  background: #000;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.blog-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 1;
+}
+
+/* ================================
+   NAVIGATION
+   ================================ */
+.blog-nav {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  justify-content: flex-end; /* Align back button to the right */
+  align-items: center;
+  padding: 1.5rem 1.5rem;
+  background: transparent; /* Fully transparent */
+  backdrop-filter: none; /* Removed blur for cleaner transparency */
+}
+
+.back-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #e5e7eb; /* Lightened for better contrast */
+  background: rgba(255, 255, 255, 0.15); /* Increased opacity for visibility */
+  border: 1px solid rgba(255, 255, 255, 0.3); /* Brighter border */
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  transition: all 0.3s ease;
+  font-size: 0.875rem;
+  cursor: pointer;
+}
+
+.back-btn:hover {
+  color: white;
+  background: rgba(255, 255, 255, 0.25); /* Slightly more opaque on hover */
+  border-color: rgba(255, 255, 255, 0.5); /* Brighter border on hover */
+}
+
+.back-icon {
+  width: 1rem;
+  height: 1rem;
+  stroke: currentColor;
+}
+
+/* ================================
+   MAIN CONTENT
+   ================================ */
+.blog-content {
+  position: relative;
+  z-index: 10;
+  padding: 2rem 1.5rem;
+  min-height: calc(100vh - 120px);
+}
+
+.blog-wrapper {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.blog-header {
+  text-align: center;
+  margin-bottom: 4rem;
+}
+
+.blog-title {
+  font-size: 3rem;
+  font-weight: 300;
+  color: white;
+  margin-bottom: 1rem;
+  letter-spacing: -0.02em;
+  background: linear-gradient(135deg, #ffffff 0%, #cccccc 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.blog-subtitle {
+  font-size: 1.25rem;
+  color: #e5e7eb; /* Lightened for better contrast */
+  font-weight: 300;
+  line-height: 1.6;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+/* ================================
+   BLOG POST GRID
+   ================================ */
+.blog-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 4rem;
+}
+
+.blog-post {
+  background: rgba(255, 255, 255, 0.05); /* Frosted glass effect */
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 1rem;
+  padding: 2rem;
+  backdrop-filter: blur(10px);
+}
+
+.post-title {
+  font-size: 1.5rem;
+  font-weight: 500;
+  color: white;
+  margin-bottom: 0.5rem;
+  position: relative;
+}
+
+.post-title::after {
+  content: '';
+  position: absolute;
+  bottom: -0.5rem;
+  left: 0;
+  width: 3rem;
+  height: 2px;
+  background: linear-gradient(90deg, #10b981, #3b82f6);
+}
+
+.post-date {
+  color: #9ca3af;
+  font-size: 0.875rem;
+  margin-bottom: 1rem;
+}
+
+.post-excerpt {
+  color: #d1d5db;
+  line-height: 1.7;
+  margin-bottom: 1.5rem;
+  font-size: 1rem;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #ffffff 0%, #f0f0f0 100%);
+  color: #000;
+  padding: 0.75rem 2rem;
+  border-radius: 0.5rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.3s ease;
+  border: none;
+  cursor: pointer;
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(255, 255, 255, 0.2);
+}
+
+.btn-icon {
+  width: 1rem;
+  height: 1rem;
+  stroke: currentColor;
+}
+
+/* ================================
+   RESPONSIVE DESIGN
+   ================================ */
+@media (min-width: 768px) {
+  .blog-content {
+    padding: 3rem 2rem;
+  }
+  
+  .blog-title {
+    font-size: 4rem;
+  }
+  
+  .blog-subtitle {
+    font-size: 1.5rem;
+  }
+  
+  .blog-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 3rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .blog-nav {
+    padding: 2rem 3rem;
+  }
+  
+  .blog-content {
+    padding: 4rem 3rem;
+  }
+  
+  .blog-grid {
+    gap: 4rem;
+  }
+}

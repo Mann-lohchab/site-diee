@@ -2,14 +2,17 @@ import { useState } from 'react';
 import './App.css';
 import Dither from './components/bg';
 import About from './pages/About';
+import Blog from './pages/Blog';
 
 function App() {
   const [currentSection, setCurrentSection] = useState('home');
 
   const renderSection = () => {
-    switch(currentSection) {
+    switch (currentSection) {
       case 'about':
         return <About onBack={() => setCurrentSection('home')} />;
+      case 'blog':
+        return <Blog onBack={() => setCurrentSection('home')} />;
       case 'home':
       default:
         return (
@@ -37,12 +40,19 @@ function App() {
                 <div className="brand-text">Portfolio</div>
               </div>
               <div className="nav-links">
-                <a href="#work" className="nav-link">
-                  Work
+                <a
+                  href="#blog"
+                  className="nav-link"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setCurrentSection('blog');
+                  }}
+                >
+                  Blog
                   <span className="nav-underline"></span>
                 </a>
-                <a 
-                  href="#about" 
+                <a
+                  href="#about"
                   className="nav-link"
                   onClick={(e) => {
                     e.preventDefault();
@@ -60,7 +70,7 @@ function App() {
                   Hire Me
                 </button>
               </div>
-              
+
               {/* Mobile Menu Button */}
               <div className="mobile-menu">
                 <button className="mobile-menu-btn">
