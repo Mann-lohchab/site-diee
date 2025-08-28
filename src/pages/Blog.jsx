@@ -1,101 +1,94 @@
-import './Blog.css';
-import Dither from '../components/bg';
+import React, { useEffect, useState } from "react";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
+import "./Blog.css";
 
-function Blog({ onBack }) {
+export default function Blog() {
+  const [posts, setPosts] = useState([]);
+  const [selectedPost, setSelectedPost] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const username = "Mann-lohchab";
+  const repo = "Blog";
+  const path = "blog";
+
+  useEffect(() => {
+    async function fetchPosts() {
+      try {
+        const res = await fetch(
+          `https://api.github.com/repos/${username}/${repo}/contents/`
+        );
+        const files = await res.json();
+
+        const mdFiles = files.filter((f) => f.name.endsWith(".md"));
+
+        const postsData = await Promise.all(
+          mdFiles.map(async (file) => {
+            const resp = await fetch(file.download_url);
+            const text = await resp.text();
+            
+            // Extract first 150 characters for preview
+            const preview = text.length > 150 
+              ? text.substring(0, 150) + "..." 
+              : text;
+            
+            return { 
+              name: file.name.replace(".md", ""), 
+              content: text,
+              preview: preview
+            };
+          })
+        );
+
+        setPosts(postsData);
+      } catch (err) {
+        console.error("Error fetching posts:", err);
+      }
+    }
+
+    fetchPosts();
+  }, []);
+
+  const openPost = (post) => {
+    setSelectedPost(post);
+    setIsModalOpen(true);
+    document.body.style.overflow = "hidden"; // Prevent scrolling when modal is open
+  };
+
+  const closePost = () => {
+    setIsModalOpen(false);
+    document.body.style.overflow = "auto"; // Re-enable scrolling
+  };
+
   return (
-    <div className="blog-container">
-      {/* Background */}
-      <div className="blog-background">
-        <Dither />
-      </div>
-      
-      {/* Navigation */}
-      <nav className="blog-nav">
-        <button onClick={onBack} className="back-btn">
-          <svg className="back-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-          </svg>
-          Back
-        </button>
-      </nav>
-
-      {/* Main Content */}
-      <div className="blog-content">
-        <div className="blog-wrapper">
-          {/* Header */}
-          <div className="blog-header">
-            <h1 className="blog-title">My Blog</h1>
-            <p className="blog-subtitle">
-              Sharing insights, tutorials, and thoughts on web development and technology
-            </p>
+    <div className="blog-page">
+      <h1 className="blog-title">My Blog</h1>
+      <div className="blog-container">
+        {posts.map((post, i) => (
+          <div className="blog-post-preview" key={i}>
+            <h2>{post.name}</h2>
+            <ReactMarkdown remarkPlugins={[remarkGfm]}>{post.preview}</ReactMarkdown>
+            <button className="read-more-btn" onClick={() => openPost(post)}>
+              Read More
+            </button>
           </div>
+        ))}
+      </div>
 
-          {/* Blog Post Grid */}
-          <div className="blog-grid">
-            {/* Blog Post 1 */}
-            <div className="blog-post">
-              <h2 className="post-title">Building Scalable React Applications</h2>
-              <p className="post-date">August 20, 2025</p>
-              <p className="post-excerpt">
-                Learn how to architect React applications for scalability using modern patterns like component composition, hooks, and state management libraries.
-              </p>
-              <button className="btn-primary">
-                Read More
-                <svg className="btn-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                </svg>
-              </button>
-            </div>
-
-            {/* Blog Post 2 */}
-            <div className="blog-post">
-              <h2 className="post-title">Mastering CSS Grid and Flexbox</h2>
-              <p className="post-date">August 15, 2025</p>
-              <p className="post-excerpt">
-                A deep dive into CSS Grid and Flexbox, exploring how to create responsive layouts with real-world examples and best practices.
-              </p>
-              <button className="btn-primary">
-                Read More
-                <svg className="btn-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                </svg>
-              </button>
-            </div>
-
-            {/* Blog Post 3 */}
-            <div className="blog-post">
-              <h2 className="post-title">Why TypeScript is a Game-Changer</h2>
-              <p className="post-date">August 10, 2025</p>
-              <p className="post-excerpt">
-                Discover how TypeScript enhances JavaScript development with static typing, better tooling, and improved code maintainability.
-              </p>
-              <button className="btn-primary">
-                Read More
-                <svg className="btn-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                </svg>
-              </button>
-            </div>
-
-            {/* Blog Post 4 */}
-            <div className="blog-post">
-              <h2 className="post-title">Optimizing Web Performance</h2>
-              <p className="post-date">August 5, 2025</p>
-              <p className="post-excerpt">
-                Tips and techniques for optimizing web performance, including lazy loading, code splitting, and minimizing render-blocking resources.
-              </p>
-              <button className="btn-primary">
-                Read More
-                <svg className="btn-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                </svg>
-              </button>
+      {isModalOpen && (
+        <div className="modal-overlay" onClick={closePost}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <button className="close-btn" onClick={closePost}>
+              &times;
+            </button>
+            <h2>{selectedPost.name}</h2>
+            <div className="full-post-content">
+              <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                {selectedPost.content}
+              </ReactMarkdown>
             </div>
           </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }
-
-export default Blog;
