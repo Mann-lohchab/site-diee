@@ -1,26 +1,20 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, lazy, Suspense } from "react";
+import { Routes, Route, useLocation } from "react-router-dom";
 import "./App.css";
-import Dither from "./components/bg";
-import About from "./pages/About";
-import Blog from "./pages/Blog";
-import Contact from "./pages/contact";
 import MinimalDock from "./components/dock";
 
+const Home = lazy(() => import("./pages/Home/Home"));
+const About = lazy(() => import("./pages/About/About"));
+const Projects = lazy(() => import("./pages/Projects/Projects"));
+const Contact = lazy(() => import("./pages/Contact/Contact"));
+
 function App() {
-  const [currentSection, setCurrentSection] = useState("home");
   const [isVisible, setIsVisible] = useState(false);
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+  const location = useLocation();
 
   useEffect(() => {
     setIsVisible(true);
-    const preloadSections = async () => {
-      await Promise.all([
-        import("./pages/About"),
-        import("./pages/Blog"),
-        import("./pages/contact"),
-      ]);
-    };
-    preloadSections();
 
     // Handle window resize for responsiveness
     const handleResize = () => {
@@ -31,92 +25,29 @@ function App() {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  const renderSection = () => {
-    switch (currentSection) {
-      case "about":
-        return <About onBack={() => setCurrentSection("home")} isMobile={isMobile} />;
-      case "blog":
-        return <Blog onBack={() => setCurrentSection("home")} isMobile={isMobile} />;
-      case "contact":
-        return <Contact onBack={() => setCurrentSection("home")} isMobile={isMobile} />;
-      case "home":
-      default:
-        return (
-          <>
-            {/* Background */}
-            <div className="background-container">
-              <Dither
-                waveColor={[0.1, 0.1, 0.1]}
-                disableAnimation={isMobile} // Disable animation on mobile for performance
-                enableMouseInteraction={!isMobile} // Disable mouse interaction on mobile
-                mouseRadius={0.2}
-                colorNum={3}
-                waveAmplitude={0.1}
-                waveFrequency={1.5}
-                waveSpeed={0.02}
-              />
-            </div>
-
-            {/* Main Content */}
-            <main className={`main-content ${isVisible ? "fade-in" : ""}`}>
-              <h1 className="hero-title">
-                Hi, I'm <span className="highlight">Creative Dev</span>
-              </h1>
-              <p className="hero-subtitle">
-                Building clean, functional & user-friendly digital experiences.
-              </p>
-
-              <div className="cta-buttons">
-                <button
-                  className="btn-primary"
-                  onClick={() => setCurrentSection("blog")}
-                >
-                  View Work
-                </button>
-                <button
-                  className="btn-secondary"
-                  onClick={() => setCurrentSection("contact")}
-                >
-                  Contact Me
-                </button>
-              </div>
-
-              {/* Skills */}
-              <div className="skills-grid">
-                <div className="skill-item">⚡ Frontend – React</div>
-                <div className="skill-item">⚙️ Backend – Node.js</div>
-                <div className="skill-item">🎨 UI/UX – Tailwind</div>
-                <div className="skill-item">📱 Mobile – React Native</div>
-              </div>
-            </main>
-
-            {/* Footer */}
-            <footer className="footer">
-              <div className="social-links">
-                <a href="#" className="social-link">
-                  LinkedIn
-                </a>
-                <a href="#" className="social-link">
-                  GitHub
-                </a>
-                <a href="#" className="social-link">
-                  Twitter
-                </a>
-              </div>
-            </footer>
-          </>
-        );
-    }
+  // Get current section from pathname
+  const getCurrentSection = () => {
+    const path = location.pathname;
+    if (path === "/about") return "about";
+    if (path === "/projects") return "projects";
+    if (path === "/contact") return "contact";
+    return "home";
   };
 
   return (
     <div className="app-container">
-      {renderSection()}
+      <Suspense fallback={<div>Loading...</div>}>
+        <Routes>
+          <Route path="/" element={<Home isVisible={isVisible} isMobile={isMobile} />} />
+          <Route path="/about" element={<About isMobile={isMobile} />} />
+          <Route path="/projects" element={<Projects />} />
+          <Route path="/contact" element={<Contact isMobile={isMobile} />} />
+        </Routes>
+      </Suspense>
 
-      {/* Dock stays same */}
+      {/* Dock with routing support */}
       <MinimalDock
-        currentSection={currentSection}
-        onSectionChange={setCurrentSection}
+        currentSection={getCurrentSection()}
         isMobile={isMobile}
       />
     </div>

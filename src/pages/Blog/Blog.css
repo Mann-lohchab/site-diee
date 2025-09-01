@@ -1,7 +1,10 @@
 .blog-page {
   padding: 2rem;
+  padding-bottom: 8rem;
   max-width: 700px; /* narrower for a "thread/post" feel */
   margin: 0 auto;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #0f0f0f 0%, #1a1a1a 50%, #0f0f0f 100%);
 }
 
 .blog-title {
@@ -141,4 +144,122 @@
   margin-left: 0;
   color: #aaa;
   margin-bottom: 1rem;
+}
+
+/* Responsive Design for Mobile */
+@media (max-width: 768px) {
+.blog-page {
+  padding: 1rem;
+  max-width: 100%;
+}
+
+.blog-title {
+  font-size: 1.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.blog-container {
+  gap: 1rem;
+}
+
+.blog-post-preview {
+  padding: 1rem;
+  border-radius: 8px;
+}
+
+.blog-post-preview h2 {
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+}
+
+.read-more-btn {
+  padding: 0.4rem 1rem;
+  font-size: 0.85rem;
+  margin-top: 0.75rem;
+}
+
+.modal-overlay {
+  padding: 0.5rem;
+}
+
+.modal-content {
+  padding: 1.5rem;
+  max-width: 95vw;
+  max-height: 90vh;
+}
+
+.close-btn {
+  top: 0.75rem;
+  right: 0.75rem;
+  font-size: 1.25rem;
+}
+}
+
+@media (max-width: 480px) {
+.blog-page {
+  padding: 0.75rem;
+}
+
+.blog-title {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.blog-post-preview {
+  padding: 0.875rem;
+}
+
+.blog-post-preview h2 {
+  font-size: 1rem;
+}
+
+.read-more-btn {
+  padding: 0.35rem 0.875rem;
+  font-size: 0.8rem;
+}
+
+.modal-content {
+  padding: 1rem;
+  max-width: 98vw;
+}
+
+.react-markdown {
+  font-size: 0.9rem;
+}
+
+.react-markdown h1,
+.react-markdown h2,
+.react-markdown h3 {
+  margin-top: 1rem;
+  margin-bottom: 0.75rem;
+}
+
+.react-markdown pre {
+  padding: 0.75rem;
+  font-size: 0.8rem;
+}
+}
+
+@media (max-width: 360px) {
+.blog-page {
+  padding: 0.5rem;
+}
+
+.blog-title {
+  font-size: 1.25rem;
+}
+
+.blog-post-preview {
+  padding: 0.75rem;
+}
+
+.modal-content {
+  padding: 0.75rem;
+}
+
+.close-btn {
+  top: 0.5rem;
+  right: 0.5rem;
+  font-size: 1.1rem;
+}
 }

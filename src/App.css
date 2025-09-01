@@ -4,14 +4,16 @@
 .app-container {
   position: relative;
   width: 100vw;
-  height: 100vh;
-  background: #000;
-  overflow: hidden;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #0f0f0f 0%, #1a1a1a 50%, #0f0f0f 100%);
+  overflow-x: hidden;
+  overflow-y: auto;
   display: flex;
   flex-direction: column;
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  height: 100vh;
 }
 
 /* ================================
@@ -116,21 +118,37 @@
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 20px;
   padding: 0.6rem;
-  box-shadow: 
+  box-shadow:
     0 12px 40px rgba(0, 0, 0, 0.4),
     inset 0 1px 0 rgba(255, 255, 255, 0.06),
     0 0 0 1px rgba(255, 255, 255, 0.03);
   transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: all;
 }
 
 .minimal-dock:hover {
   background: rgba(20, 20, 20, 0.9);
   border-color: rgba(255, 255, 255, 0.12);
-  box-shadow: 
+  box-shadow:
     0 16px 48px rgba(0, 0, 0, 0.5),
     inset 0 1px 0 rgba(255, 255, 255, 0.08),
     0 0 0 1px rgba(255, 255, 255, 0.05);
   transform: translateY(-2px);
+}
+
+.minimal-dock.hidden {
+  opacity: 0.3;
+  transform: translateY(20px);
+  pointer-events: none;
+  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.minimal-dock.hidden:hover {
+  opacity: 1;
+  transform: translateY(-2px);
+  pointer-events: all;
 }
 
 .minimal-dock-item {
@@ -239,16 +257,7 @@
 /* ================================
    MAIN CONTENT
    ================================ */
-.main-content {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  min-height: 80vh;
-  padding: 0 1.5rem;
-  opacity: 0;
-}
+/* Main content styles are handled by individual page components */
 
 .hero-container {
   max-width: 56rem;
@@ -671,8 +680,10 @@
 /* Dock adjustments for mobile */
 .minimal-dock-container {
   bottom: 1rem;
-  width: 100%;
-  padding: 0 1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  width: auto;
+  padding: 0;
 }
 
 .minimal-dock {

@@ -1,12 +1,70 @@
 // MinimalDock.jsx
-import { useState } from 'react';
+import { useState, useEffect, useRef, memo, useCallback, useMemo } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 
-const MinimalDock = ({ currentSection, onSectionChange }) => {
+const MinimalDock = memo(({ currentSection, isMobile }) => {
   const [hoveredItem, setHoveredItem] = useState(null);
+  const [isHidden, setIsHidden] = useState(false);
+  const hideTimeoutRef = useRef(null);
+  const dockRef = useRef(null);
+  const location = useLocation();
+
+  // Debounced mouse move handler
+  const debouncedMouseMove = useCallback(() => {
+    let timeoutId;
+    return (e) => {
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(() => {
+        if (e.clientY > window.innerHeight - 150) {
+          setIsHidden(false);
+          resetHideTimer();
+        }
+      }, 16); // ~60fps
+    };
+  }, []);
+
+  const handleMouseMove = useMemo(() => debouncedMouseMove(), [debouncedMouseMove]);
+
+  const handleMouseEnter = useCallback(() => {
+    setIsHidden(false);
+    resetHideTimer();
+  }, []);
+
+  const resetHideTimer = useCallback(() => {
+    if (hideTimeoutRef.current) {
+      clearTimeout(hideTimeoutRef.current);
+    }
+    hideTimeoutRef.current = setTimeout(() => {
+      setIsHidden(true);
+    }, 3000); // Hide after 3 seconds of inactivity
+  }, []);
+
+  // Auto-hide functionality
+  useEffect(() => {
+    // Initial hide timer
+    resetHideTimer();
+
+    // Add event listeners
+    document.addEventListener('mousemove', handleMouseMove, { passive: true });
+    if (dockRef.current) {
+      dockRef.current.addEventListener('mouseenter', handleMouseEnter);
+    }
+
+    return () => {
+      document.removeEventListener('mousemove', handleMouseMove);
+      if (dockRef.current) {
+        dockRef.current.removeEventListener('mouseenter', handleMouseEnter);
+      }
+      if (hideTimeoutRef.current) {
+        clearTimeout(hideTimeoutRef.current);
+      }
+    };
+  }, [handleMouseMove, handleMouseEnter, resetHideTimer]);
 
   const dockItems = [
-    { 
-      id: 'home', 
+    {
+      id: 'home',
+      path: '/',
       icon: (
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
           <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
@@ -15,8 +73,9 @@ const MinimalDock = ({ currentSection, onSectionChange }) => {
       ),
       label: 'Home'
     },
-    { 
-      id: 'about', 
+    {
+      id: 'about',
+      path: '/about',
       icon: (
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
           <circle cx="12" cy="12" r="3"/>
@@ -25,20 +84,19 @@ const MinimalDock = ({ currentSection, onSectionChange }) => {
       ),
       label: 'About'
     },
-    { 
-      id: 'blog', 
+    {
+      id: 'projects',
+      path: '/projects',
       icon: (
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-          <polyline points="14,2 14,8 20,8"/>
-          <line x1="16" y1="13" x2="8" y2="13"/>
-          <line x1="16" y1="17" x2="8" y2="17"/>
+          <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
         </svg>
       ),
-      label: 'Blog'
+      label: 'Projects'
     },
-    { 
-      id: 'contact', 
+    {
+      id: 'contact',
+      path: '/contact',
       icon: (
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
           <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
@@ -52,31 +110,36 @@ const MinimalDock = ({ currentSection, onSectionChange }) => {
   return (
     <>
       {/* Tooltip */}
-      {hoveredItem && (
+      {hoveredItem && !isHidden && (
         <div className="dock-tooltip">
           {hoveredItem.label}
         </div>
       )}
-      
+
       {/* Minimal Dock */}
       <div className="minimal-dock-container">
-        <div className="minimal-dock">
+        <div
+          ref={dockRef}
+          className={`minimal-dock ${isHidden ? 'hidden' : ''}`}
+        >
           {dockItems.map((item) => (
-            <button
+            <Link
               key={item.id}
+              to={item.path}
               className={`minimal-dock-item ${currentSection === item.id ? 'active' : ''}`}
-              onClick={() => onSectionChange(item.id)}
               onMouseEnter={() => setHoveredItem(item)}
               onMouseLeave={() => setHoveredItem(null)}
             >
               {item.icon}
               {currentSection === item.id && <div className="active-indicator" />}
-            </button>
+            </Link>
           ))}
         </div>
       </div>
     </>
   );
-};
+});
+
+MinimalDock.displayName = 'MinimalDock';
 
 export default MinimalDock;
