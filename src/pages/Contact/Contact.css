@@ -70,6 +70,10 @@
 }
 
 .hero-title {
+  margin-bottom: 1rem;
+}
+
+.hero-title {
   font-size: clamp(2.5rem, 5vw, 4rem);
   font-weight: 300;
   color: white;
@@ -385,6 +389,7 @@
     transform: translateY(0);
   }
 }
+
 
 /* ================================
    RESPONSIVE DESIGN

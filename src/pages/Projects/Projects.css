@@ -369,6 +369,13 @@
   }
 }
 
+/* Hide back button on mobile */
+@media (max-width: 768px) {
+  .back-button {
+    display: none;
+  }
+}
+
 /* Touch device optimizations */
 @media (hover: none) {
   .project-card:hover,

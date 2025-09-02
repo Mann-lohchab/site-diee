@@ -25,6 +25,17 @@ function App() {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
+  // Auto-refresh on mobile to ensure proper dock alignment (once per session)
+  useEffect(() => {
+    if (isMobile && !localStorage.getItem('mobileRefreshed')) {
+      localStorage.setItem('mobileRefreshed', 'true');
+      // Small delay to ensure DOM is ready
+      setTimeout(() => {
+        window.location.reload();
+      }, 100);
+    }
+  }, [isMobile]);
+
   // Get current section from pathname
   const getCurrentSection = () => {
     const path = location.pathname;

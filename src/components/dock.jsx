@@ -4,62 +4,8 @@ import { Link, useLocation } from 'react-router-dom';
 
 const MinimalDock = memo(({ currentSection, isMobile }) => {
   const [hoveredItem, setHoveredItem] = useState(null);
-  const [isHidden, setIsHidden] = useState(false);
-  const hideTimeoutRef = useRef(null);
   const dockRef = useRef(null);
   const location = useLocation();
-
-  // Debounced mouse move handler
-  const debouncedMouseMove = useCallback(() => {
-    let timeoutId;
-    return (e) => {
-      clearTimeout(timeoutId);
-      timeoutId = setTimeout(() => {
-        if (e.clientY > window.innerHeight - 150) {
-          setIsHidden(false);
-          resetHideTimer();
-        }
-      }, 16); // ~60fps
-    };
-  }, []);
-
-  const handleMouseMove = useMemo(() => debouncedMouseMove(), [debouncedMouseMove]);
-
-  const handleMouseEnter = useCallback(() => {
-    setIsHidden(false);
-    resetHideTimer();
-  }, []);
-
-  const resetHideTimer = useCallback(() => {
-    if (hideTimeoutRef.current) {
-      clearTimeout(hideTimeoutRef.current);
-    }
-    hideTimeoutRef.current = setTimeout(() => {
-      setIsHidden(true);
-    }, 3000); // Hide after 3 seconds of inactivity
-  }, []);
-
-  // Auto-hide functionality
-  useEffect(() => {
-    // Initial hide timer
-    resetHideTimer();
-
-    // Add event listeners
-    document.addEventListener('mousemove', handleMouseMove, { passive: true });
-    if (dockRef.current) {
-      dockRef.current.addEventListener('mouseenter', handleMouseEnter);
-    }
-
-    return () => {
-      document.removeEventListener('mousemove', handleMouseMove);
-      if (dockRef.current) {
-        dockRef.current.removeEventListener('mouseenter', handleMouseEnter);
-      }
-      if (hideTimeoutRef.current) {
-        clearTimeout(hideTimeoutRef.current);
-      }
-    };
-  }, [handleMouseMove, handleMouseEnter, resetHideTimer]);
 
   const dockItems = [
     {
@@ -110,7 +56,7 @@ const MinimalDock = memo(({ currentSection, isMobile }) => {
   return (
     <>
       {/* Tooltip */}
-      {hoveredItem && !isHidden && (
+      {hoveredItem && (
         <div className="dock-tooltip">
           {hoveredItem.label}
         </div>
@@ -120,7 +66,7 @@ const MinimalDock = memo(({ currentSection, isMobile }) => {
       <div className="minimal-dock-container">
         <div
           ref={dockRef}
-          className={`minimal-dock ${isHidden ? 'hidden' : ''}`}
+          className="minimal-dock"
         >
           {dockItems.map((item) => (
             <Link
